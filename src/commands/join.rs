@@ -1,4 +1,4 @@
-use anyhow::{Result, anyhow};
+use anyhow::{Context, Result, anyhow};
 use clap::Args;
 use regex::Regex;
 
@@ -34,8 +34,11 @@ pub fn get_canonical_room_name(name: String) -> Result<String> {
 }
 
 pub fn run(args: JoinArgs) -> Result<()> {
-    // TODO: look up the Zoom URL for the room and open it
-    let canonical_room = get_canonical_room_name(args.room)?;
-    println!("Joining room: {}", canonical_room);
+    let canonical_room_name = get_canonical_room_name(args.room)?;
+    let redirect_url = format!("https://www.recurse.com/zoom/{}", canonical_room_name);
+
+    println!("Joining room: {}", canonical_room_name);
+    open::that(&redirect_url).with_context(|| format!("Failed to open {}", redirect_url))?;
+
     Ok(())
 }
