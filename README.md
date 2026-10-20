@@ -1,0 +1,2 @@
+# batchmate-cli
+Batchmate CLI
