@@ -25,6 +25,12 @@ batchmate join ps2
 
 Other commands (`batchmate events` etc.) are planned but not implemented yet.
 
+## Authentication
+
+`batchmate join` relies on your browser for authentication. It opens the room's recurse.com link in your default browser, and recurse.com checks that you're signed in to your Recurse account before redirecting you to the Zoom link. If you aren't signed in, you'll be redirected to the recurse.com login page. You don't need to link your account to `batchmate` to use this command.
+
+Commands that talk to the Recurse Center API directly, such as `batchmate events`, will require you to link your account using OAuth2 once they're implemented.
+
 ## Installation
 
 Requires [Rust](https://rustup.rs) (edition 2024, so a recent stable toolchain).
