@@ -1,5 +1,7 @@
 mod commands;
 
+use anyhow::Result;
+
 use clap::{Parser, Subcommand};
 
 use commands::{events, join};
@@ -22,7 +24,7 @@ enum Command {
     },
 }
 
-fn main() {
+fn main() -> Result<()> {
     let cli = Cli::parse();
 
     match cli.command {

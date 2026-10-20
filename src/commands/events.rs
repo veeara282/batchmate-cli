@@ -1,3 +1,4 @@
+use anyhow::Result;
 use clap::{Args, Subcommand};
 
 #[derive(Subcommand)]
@@ -13,13 +14,14 @@ pub struct ListArgs {
     pub limit: usize,
 }
 
-pub fn run(command: EventsCommand) {
+pub fn run(command: EventsCommand) -> Result<()> {
     match command {
         EventsCommand::List(args) => list(args),
     }
 }
 
-fn list(args: ListArgs) {
+fn list(args: ListArgs) -> Result<()> {
     // TODO: fetch upcoming events from the private calendar
     println!("Listing up to {} upcoming events", args.limit);
+    Ok(())
 }
