@@ -1,4 +1,4 @@
-# batchmate-cli
+# Batchmate CLI
 A command-line utility for joining Recurse Center Zoom rooms from the terminal.
 
 ## Usage
@@ -56,3 +56,7 @@ Run without installing:
 ```
 cargo run -- join <room>
 ```
+
+## Acknowledgments
+
+The Batchmate CLI was inspired by the [original Batchmate app](https://batchmate.app/) – see its source code [on GitHub](https://github.com/rc-batchmates/batchmate-app).
