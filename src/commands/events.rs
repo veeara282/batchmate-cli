@@ -1,7 +1,9 @@
-use anyhow::Result;
+use anyhow::{Result, anyhow};
 use clap::{Args, Subcommand};
+use icalendar::{Calendar, Component, Event};
 
-use crate::modules::settings::read_settings;
+use crate::modules::calendar::load_calendar;
+use crate::modules::event::{RCEvent, list_upcoming_events};
 
 #[derive(Subcommand)]
 pub enum EventsCommand {
@@ -25,8 +27,12 @@ pub fn run(command: EventsCommand) -> Result<()> {
 fn list(args: ListArgs) -> Result<()> {
     // TODO: fetch upcoming events from the private calendar
     println!("Listing up to {} upcoming events", args.limit);
-    let settings = read_settings()?;
-    println!("{settings:?}");
+    let parsed_calendar = load_calendar()?;
+    let future_and_ongoing_events: Vec<RCEvent> = list_upcoming_events(parsed_calendar, args.limit);
+
+    for event in future_and_ongoing_events {
+        println!("{:?}", event);
+    }
 
     Ok(())
 }
