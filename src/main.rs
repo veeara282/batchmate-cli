@@ -1,10 +1,11 @@
 mod commands;
+mod modules;
 
 use anyhow::Result;
 
 use clap::{Parser, Subcommand};
 
-use commands::{events, join};
+use commands::{events, join, login, logout};
 
 #[derive(Parser)]
 #[command(name = "batchmate", version, about = "Recurse Center batchmate CLI")]
@@ -22,6 +23,10 @@ enum Command {
         #[command(subcommand)]
         command: events::EventsCommand,
     },
+    /// Connect your Recurse Center calendar
+    Login(login::LoginArgs),
+    /// Remove your saved Recurse Center calendar settings
+    Logout(logout::LogoutArgs),
 }
 
 fn main() -> Result<()> {
@@ -30,5 +35,7 @@ fn main() -> Result<()> {
     match cli.command {
         Command::Join(args) => join::run(args),
         Command::Events { command } => events::run(command),
+        Command::Login(args) => login::run(args),
+        Command::Logout(args) => logout::run(args),
     }
 }

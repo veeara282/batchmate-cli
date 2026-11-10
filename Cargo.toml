@@ -1,13 +1,21 @@
 [package]
 name = "batchmate-cli"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
 
 [dependencies]
 anyhow = "1.0.104"
+cfgmatic-paths = "5.0.1"
+chrono = "0.4.45"
 clap = { version = "4.6.7", features = ["derive"] }
+icalendar = { version = "0.17.17", features = ["chrono-tz"] }
+nu-ansi-term = "0.50.3"
 open = "5.4.4"
 regex = "1.13.1"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+text_io = "0.1.13"
+ureq = "3.5.1"
 
 [[bin]]
 name = "batchmate"
