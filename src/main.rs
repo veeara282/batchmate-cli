@@ -23,6 +23,7 @@ enum Command {
         #[command(subcommand)]
         command: events::EventsCommand,
     },
+    /// Connect your Recurse Center calendar
     Login(login::LoginArgs),
 }
 
