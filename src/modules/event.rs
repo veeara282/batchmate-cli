@@ -5,6 +5,8 @@ use icalendar::{Calendar, Component, DatePerhapsTime};
 #[derive(Clone, Debug)]
 pub struct RCEvent {
     pub summary: String,
+    // Not used yet; reserved for upcoming commands.
+    #[allow(dead_code)]
     pub description: String,
     pub start_time: DateTime<Utc>,
     pub end_time: DateTime<Utc>,
