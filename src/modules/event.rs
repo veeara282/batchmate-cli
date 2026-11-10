@@ -1,6 +1,6 @@
 use anyhow::{Result, anyhow};
 use chrono::{DateTime, Utc};
-use icalendar::{Calendar, Component, DatePerhapsTime};
+use icalendar::{Calendar, Component, DatePerhapsTime, EventLike};
 
 #[derive(Clone, Debug)]
 pub struct RCEvent {
@@ -10,6 +10,7 @@ pub struct RCEvent {
     pub description: String,
     pub start_time: DateTime<Utc>,
     pub end_time: DateTime<Utc>,
+    pub location: String,
     pub zoom_url: String,
 }
 
@@ -21,6 +22,10 @@ fn convert_ical_time(raw: DatePerhapsTime) -> Result<DateTime<Utc>> {
             .map(|dt| dt.with_timezone(&Utc))
             .ok_or(anyhow!("Datetime conversion failed")),
     }
+}
+
+fn simplify_location(raw: &str) -> String {
+    raw.split("-").next().unwrap_or_default().trim().to_string()
 }
 
 pub fn list_upcoming_events(calendar: Calendar, limit: usize) -> Vec<RCEvent> {
@@ -39,6 +44,7 @@ pub fn list_upcoming_events(calendar: Calendar, limit: usize) -> Vec<RCEvent> {
                 description: event.get_description().unwrap_or_default().to_string(),
                 start_time: convert_ical_time(start_raw).unwrap(),
                 end_time: convert_ical_time(end_raw).unwrap(),
+                location: simplify_location(event.get_location().unwrap_or_default()),
                 zoom_url: event
                     .property_value("X-CONFERENCE-URL")
                     .unwrap_or_default()
