@@ -4,7 +4,7 @@ use anyhow::Result;
 
 use clap::{Parser, Subcommand};
 
-use commands::{events, join};
+use commands::{events, join, login};
 
 #[derive(Parser)]
 #[command(name = "batchmate", version, about = "Recurse Center batchmate CLI")]
@@ -22,6 +22,7 @@ enum Command {
         #[command(subcommand)]
         command: events::EventsCommand,
     },
+    Login(login::LoginArgs),
 }
 
 fn main() -> Result<()> {
@@ -30,5 +31,6 @@ fn main() -> Result<()> {
     match cli.command {
         Command::Join(args) => join::run(args),
         Command::Events { command } => events::run(command),
+        Command::Login(args) => login::run(args),
     }
 }
