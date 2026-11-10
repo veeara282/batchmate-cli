@@ -1,6 +1,7 @@
-use anyhow::{Result, anyhow};
+use anyhow::Result;
+use chrono::{Local, Utc};
 use clap::{Args, Subcommand};
-use icalendar::{Calendar, Component, Event};
+use nu_ansi_term::Color::{Blue, Red};
 
 use crate::modules::calendar::load_calendar;
 use crate::modules::event::{RCEvent, list_upcoming_events};
@@ -31,7 +32,18 @@ fn list(args: ListArgs) -> Result<()> {
     let future_and_ongoing_events: Vec<RCEvent> = list_upcoming_events(parsed_calendar, args.limit);
 
     for event in future_and_ongoing_events {
-        println!("{:?}", event);
+        println!("|-{}", Red.paint(event.summary));
+        println!(
+            "| {} at {}",
+            if event.start_time <= Utc::now() {
+                "Started"
+            } else {
+                "Starts"
+            },
+            event.start_time.with_timezone(&Local)
+        );
+        println!("| Ends at {}", event.end_time.with_timezone(&Local));
+        println!("| Join: {}", Blue.underline().paint(event.zoom_url));
     }
 
     Ok(())

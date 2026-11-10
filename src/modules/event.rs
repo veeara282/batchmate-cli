@@ -1,5 +1,3 @@
-use std::time::{self, SystemTime};
-
 use anyhow::{Result, anyhow};
 use chrono::{DateTime, Utc};
 use icalendar::{Calendar, Component, DatePerhapsTime};
@@ -18,7 +16,7 @@ fn convert_ical_time(raw: DatePerhapsTime) -> Result<DateTime<Utc>> {
         DatePerhapsTime::Date(_dt) => Err(anyhow!("Full day event unsupported for now")),
         DatePerhapsTime::DateTime(dtm) => dtm
             .as_dt_with_tz()
-            .and_then(|dt| Some(dt.with_timezone(&Utc)))
+            .map(|dt| dt.with_timezone(&Utc))
             .ok_or(anyhow!("Datetime conversion failed")),
     }
 }
