@@ -1,6 +1,8 @@
 use anyhow::Result;
 use clap::{Args, Subcommand};
 
+use crate::modules::settings::read_settings;
+
 #[derive(Subcommand)]
 pub enum EventsCommand {
     /// List upcoming events on the Recurse Center calendar
@@ -23,5 +25,8 @@ pub fn run(command: EventsCommand) -> Result<()> {
 fn list(args: ListArgs) -> Result<()> {
     // TODO: fetch upcoming events from the private calendar
     println!("Listing up to {} upcoming events", args.limit);
+    let settings = read_settings()?;
+    println!("{settings:?}");
+
     Ok(())
 }

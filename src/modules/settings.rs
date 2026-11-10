@@ -24,9 +24,18 @@ pub fn get_config_path() -> Result<PathBuf> {
     Ok(config_path)
 }
 
+/// write settings to file
 pub fn write_settings(settings: &Settings) -> Result<()> {
     let config_path = get_config_path()?;
     let json_settings = serde_json::to_string(settings)?;
     fs::write(config_path, &json_settings)?;
     Ok(())
+}
+
+/// read settings from file
+pub fn read_settings() -> Result<Settings> {
+    let config_path = get_config_path()?;
+    let settings_bytes = fs::read(config_path)?;
+    let settings = serde_json::from_slice::<Settings>(&settings_bytes)?;
+    Ok(settings)
 }
