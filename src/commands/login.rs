@@ -1,11 +1,10 @@
+use std::fs;
 use std::path::PathBuf;
-use std::{fs::File, io::Write};
 
-use anyhow::{Result, anyhow};
-use clap::{Args, Subcommand};
+use anyhow::Result;
+use clap::Args;
 
 use cfgmatic_paths::PathsBuilder;
-use config::Config;
 use serde::{Deserialize, Serialize};
 use serde_json;
 use text_io::read;
@@ -18,25 +17,20 @@ struct Settings {
 #[derive(Args)]
 pub struct LoginArgs {}
 
-pub fn run(args: LoginArgs) -> Result<()> {
+/// load config file path
+pub fn get_config_path() -> Result<PathBuf> {
     let finder = PathsBuilder::new("batchmate").build();
     let user_dirs = finder.user_dirs();
     println!("User config dirs: {:?}", user_dirs);
 
-    let mut config_path: PathBuf;
-    if let Ok(config_dir) = finder.ensure_user_config_dir() {
-        println!("Config: {}", config_dir.display());
-        config_path = config_dir.clone();
-        config_path.push("settings.json");
-    } else {
-        return Err(anyhow!("Failed to locate config file"));
-    }
+    let mut config_path = finder.ensure_user_config_dir()?;
+    config_path.push("settings.json");
     println!("Config file path: {:?}", config_path);
+    Ok(config_path)
+}
 
-    // let settings = Config::builder()
-    //     .add_source(config::File::with_name(config_path.to_str().unwrap()))
-    //     .build()?;
-    // let settings: Settings = settings.try_deserialize()?;
+pub fn run(args: LoginArgs) -> Result<()> {
+    let config_path = get_config_path()?;
 
     println!("Paste your RC calendar feed URL here:");
     let input_url: String = read!();
@@ -45,8 +39,7 @@ pub fn run(args: LoginArgs) -> Result<()> {
         calendar_url: input_url,
     };
     let json_settings = serde_json::to_string(&new_settings)?;
-    let mut f = File::create(config_path)?;
-    f.write_all(json_settings.as_bytes())?;
+    fs::write(config_path, &json_settings)?;
 
     println!("Settings saved!");
     Ok(())

@@ -7,7 +7,6 @@ edition = "2024"
 anyhow = "1.0.104"
 cfgmatic-paths = "5.0.1"
 clap = { version = "4.6.7", features = ["derive"] }
-config = "0.15.27"
 icalendar = "0.17.17"
 open = "5.4.4"
 regex = "1.13.1"
