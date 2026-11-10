@@ -33,6 +33,16 @@ pub fn write_settings(settings: &Settings) -> Result<()> {
     Ok(())
 }
 
+/// delete the settings file; returns false if there was none to delete
+pub fn clear_settings() -> Result<bool> {
+    let config_path = get_config_path()?;
+    match fs::remove_file(&config_path) {
+        Ok(()) => Ok(true),
+        Err(e) if e.kind() == ErrorKind::NotFound => Ok(false),
+        Err(e) => Err(anyhow::Error::from(e).context("Failed to delete settings file")),
+    }
+}
+
 /// read settings from file
 pub fn read_settings() -> Result<Settings> {
     let config_path = get_config_path()?;

@@ -40,6 +40,14 @@ batchmate events list --limit 5
 
 If you haven't run `batchmate login` yet, `batchmate events list` will tell you to do so.
 
+To remove your saved calendar URL, run:
+
+```
+batchmate logout
+```
+
+This deletes the `settings.json` file. Run `batchmate login` again if you want to use `batchmate events` later.
+
 ## Authentication
 
 `batchmate join` relies on your browser for authentication. It opens the room's recurse.com link in your default browser, and recurse.com checks that you're signed in to your Recurse account before redirecting you to the Zoom link. If you aren't signed in, you'll be redirected to the recurse.com login page. You don't need to link your account to `batchmate` to use this command.
